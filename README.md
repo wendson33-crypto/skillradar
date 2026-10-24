@@ -15,7 +15,17 @@
 
 ---
 
+### 🌐 Entregáveis Oficiais do Edital / Project Deliverables
+
+| Entregável | Link Oficial | Status |
+|---|---|---|
+| **Repositório Público GitHub** | [github.com/wendson33-crypto/skillradar](https://github.com/wendson33-crypto/skillradar) | 🟢 Publicado & Auditado |
+| **Aplicação Web em Produção (Vercel)** | [skillradar.vercel.app](https://skillradar.vercel.app) *(ou URL gerada no Vercel)* | 🚀 Pronto para Importação |
+
+---
+
 ## 🇧🇷 Português do Brasil
+
 
 ### 📌 1. Visão Geral
 O **SkillRadar** é uma plataforma analítica que conecta o universo acadêmico à demanda do mercado de trabalho regional (foco em Ourinhos e região). A ferramenta compara de forma determinística as competências ensinadas nos cursos técnicos do SENAI com os requisitos reais extraídos de vagas de emprego, revelando lacunas curriculares e orientando alunos com trilhas de aprendizagem personalizadas.
