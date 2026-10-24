@@ -1,5 +1,7 @@
 // docs/js/firebase.js
-// Conexão com Firebase Firestore (modular SDK 10.12.0) e camada de fallback offline
+// Conexão com Firebase Firestore (modular SDK 10.12.0) e camada de resiliência com dados embutidos
+
+import { DEMO_PAYLOAD } from "./demo-data.js";
 
 let db = null;
 let app = null;
@@ -18,77 +20,69 @@ let callbacks = {
   onStatus: null,
 };
 
-let dadosOfflineCache = null;
 let slugCursoAtual = "tecnico-em-desenvolvimento-de-sistemas";
 
-/** Carrega os dados de demonstração em modo offline */
-export async function carregarDadosOffline() {
-  if (dadosOfflineCache) return dadosOfflineCache;
-  try {
-    const res = await fetch("data/demo_payload.json");
-    if (res.ok) {
-      dadosOfflineCache = await res.json();
-      return dadosOfflineCache;
-    }
-  } catch (e) {
-    console.warn("Aviso: Falha ao carregar data/demo_payload.json, usando memória embutida.", e);
-  }
-  return null;
+/** Carrega os dados de demonstração embutidos ou de arquivo */
+export function carregarDadosOffline() {
+  return DEMO_PAYLOAD;
 }
 
-/** Despacha os dados offline para os listeners ativos */
-function despacharDadosOffline(slugCurso) {
-  if (!dadosOfflineCache) return;
+/** Despacha os dados determinísticos do payload para a interface */
+export function despacharDadosOffline(slugCurso) {
+  const dados = DEMO_PAYLOAD;
+  if (!dados) return;
 
-  if (dadosOfflineCache.contexto && dadosOfflineCache.contexto.atual) {
-    callbacks.onContexto?.(dadosOfflineCache.contexto.atual);
+  if (dados.contexto && dados.contexto.atual) {
+    callbacks.onContexto?.(dados.contexto.atual);
   }
 
-  if (dadosOfflineCache.lacunas_cursos && dadosOfflineCache.lacunas_cursos[slugCurso]) {
-    callbacks.onLacunas?.(dadosOfflineCache.lacunas_cursos[slugCurso]);
+  if (dados.lacunas_cursos && dados.lacunas_cursos[slugCurso]) {
+    callbacks.onLacunas?.(dados.lacunas_cursos[slugCurso]);
   }
 
-  if (dadosOfflineCache.trilhas_sugeridas && dadosOfflineCache.trilhas_sugeridas[slugCurso]) {
-    callbacks.onTrilhas?.(dadosOfflineCache.trilhas_sugeridas[slugCurso]);
+  if (dados.trilhas_sugeridas && dados.trilhas_sugeridas[slugCurso]) {
+    callbacks.onTrilhas?.(dados.trilhas_sugeridas[slugCurso]);
   }
 
-  if (dadosOfflineCache.vagas_ativas) {
-    const listaVagas = Object.values(dadosOfflineCache.vagas_ativas);
+  if (dados.vagas_ativas) {
+    const listaVagas = Array.isArray(dados.vagas_ativas)
+      ? dados.vagas_ativas
+      : Object.values(dados.vagas_ativas);
     callbacks.onVagas?.(listaVagas);
   }
 
-  if (dadosOfflineCache.insights) {
-    const listaInsights = Object.values(dadosOfflineCache.insights);
+  if (dados.insights) {
+    const listaInsights = Array.isArray(dados.insights)
+      ? dados.insights
+      : Object.values(dados.insights);
     callbacks.onInsights?.(listaInsights);
   }
-
-  callbacks.onStatus?.({ conectado: false, modoDemo: true, texto: "Demonstração Offline" });
 }
 
-/** Inicializa conexão Firestore ou ativa fallback offline */
+/** Inicializa conexão Firestore ou ativa fallback com os dados embutidos */
 export async function inicializarFirebase(cb) {
   callbacks = { ...callbacks, ...cb };
-  const config = window.SKILLRADAR_CONFIG;
 
+  // 1. Despacha imediatamente os dados locais para carregamento instantâneo
+  despacharDadosOffline(slugCursoAtual);
+
+  const config = window.SKILLRADAR_CONFIG;
   const ehConfigExemplo = !config || !config.apiKey || config.apiKey.includes("EXEMPLO");
 
   if (ehConfigExemplo) {
-    console.info("[SkillRadar] Modo demonstração/offline ativo (chave pública não configurada).");
-    await carregarDadosOffline();
-    despacharDadosOffline(slugCursoAtual);
+    console.info("[SkillRadar] Modo demonstração offline ativo.");
+    callbacks.onStatus?.({ conectado: false, modoDemo: true, texto: "Demonstração Offline" });
     return;
   }
 
   try {
-    // Import dinâmico do Firebase Modular SDK 10.12.0
+    // 2. Conecta ao Firebase Web SDK 10.12.0
     const { initializeApp } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js");
     const {
       getFirestore,
       collection,
       doc,
       onSnapshot,
-      addDoc,
-      serverTimestamp,
     } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
 
     app = initializeApp(config);
@@ -98,60 +92,72 @@ export async function inicializarFirebase(cb) {
     unsubContexto = onSnapshot(doc(db, "contexto", "atual"), (snap) => {
       if (snap.exists()) {
         callbacks.onContexto?.(snap.data());
+      } else if (DEMO_PAYLOAD.contexto?.atual) {
+        callbacks.onContexto?.(DEMO_PAYLOAD.contexto.atual);
       }
     }, (err) => {
-      console.warn("Erro no snapshot de contexto:", err);
-      ativarFallbackOffline();
+      console.warn("Snapshot de contexto indisponível:", err.message);
     });
 
     // Listener de Vagas Ativas
     unsubVagas = onSnapshot(collection(db, "vagas_ativas"), (snap) => {
       const vagas = [];
       snap.forEach((d) => vagas.push({ id: d.id, ...d.data() }));
-      callbacks.onVagas?.(vagas);
-      callbacks.onStatus?.({ conectado: true, modoDemo: false, texto: "Atualizado ao vivo" });
+
+      if (vagas.length > 0) {
+        callbacks.onVagas?.(vagas);
+        callbacks.onStatus?.({ conectado: true, modoDemo: false, texto: "Atualizado ao vivo" });
+      } else {
+        // Se a coleção na nuvem ainda não foi populada, mantém a base de vagas demo
+        const vagasDemo = Object.values(DEMO_PAYLOAD.vagas_ativas || {});
+        callbacks.onVagas?.(vagasDemo);
+        callbacks.onStatus?.({ conectado: true, modoDemo: true, texto: "Atualizado ao vivo (Base Demo)" });
+      }
     }, (err) => {
-      console.warn("Erro no snapshot de vagas:", err);
-      ativarFallbackOffline();
+      console.warn("Snapshot de vagas indisponível, mantendo dados locais:", err.message);
+      callbacks.onStatus?.({ conectado: false, modoDemo: true, texto: "Demonstração Offline" });
     });
 
     // Listener de Insights
     unsubInsights = onSnapshot(collection(db, "insights"), (snap) => {
       const insights = [];
       snap.forEach((d) => insights.push({ id: d.id, ...d.data() }));
-      callbacks.onInsights?.(insights);
+      if (insights.length > 0) {
+        callbacks.onInsights?.(insights);
+      } else if (DEMO_PAYLOAD.insights) {
+        callbacks.onInsights?.(Object.values(DEMO_PAYLOAD.insights));
+      }
     }, (err) => {
-      console.warn("Erro no snapshot de insights:", err);
+      console.warn("Snapshot de insights indisponível:", err.message);
     });
 
     conectarCurso(slugCursoAtual, { doc, onSnapshot });
 
   } catch (err) {
-    console.warn("[SkillRadar] Falha ao conectar ao Firebase Web SDK, alternando para dados locais:", err);
-    ativarFallbackOffline();
+    console.warn("[SkillRadar] Executando com dados determinísticos locais:", err.message);
+    callbacks.onStatus?.({ conectado: false, modoDemo: true, texto: "Demonstração Offline" });
   }
 }
 
-async function ativarFallbackOffline() {
-  await carregarDadosOffline();
-  despacharDadosOffline(slugCursoAtual);
-}
-
-/** Troca o curso ativo e religa os snapshots do Firestore ou dados locais */
+/** Troca o curso ativo e religa os snapshots do Firestore e dados locais */
 export async function trocarCurso(novoSlug) {
   slugCursoAtual = novoSlug;
 
-  if (!db) {
-    if (!dadosOfflineCache) await carregarDadosOffline();
-    despacharDadosOffline(novoSlug);
-    return;
+  // Atualiza imediatamente a visualização com os dados do curso selecionado
+  if (DEMO_PAYLOAD.lacunas_cursos?.[novoSlug]) {
+    callbacks.onLacunas?.(DEMO_PAYLOAD.lacunas_cursos[novoSlug]);
   }
+  if (DEMO_PAYLOAD.trilhas_sugeridas?.[novoSlug]) {
+    callbacks.onTrilhas?.(DEMO_PAYLOAD.trilhas_sugeridas[novoSlug]);
+  }
+
+  if (!db) return;
 
   try {
     const { doc, onSnapshot } = await import("https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js");
     conectarCurso(novoSlug, { doc, onSnapshot });
   } catch (err) {
-    despacharDadosOffline(novoSlug);
+    console.warn("Erro ao trocar curso no Firestore:", err.message);
   }
 }
 
@@ -162,22 +168,24 @@ function conectarCurso(slug, { doc, onSnapshot }) {
   unsubLacunas = onSnapshot(doc(db, "lacunas_cursos", slug), (snap) => {
     if (snap.exists()) {
       callbacks.onLacunas?.(snap.data());
+    } else if (DEMO_PAYLOAD.lacunas_cursos?.[slug]) {
+      callbacks.onLacunas?.(DEMO_PAYLOAD.lacunas_cursos[slug]);
     }
   }, (err) => {
-    console.warn(`Erro no snapshot do curso ${slug}:`, err);
-    if (dadosOfflineCache?.lacunas_cursos?.[slug]) {
-      callbacks.onLacunas?.(dadosOfflineCache.lacunas_cursos[slug]);
+    if (DEMO_PAYLOAD.lacunas_cursos?.[slug]) {
+      callbacks.onLacunas?.(DEMO_PAYLOAD.lacunas_cursos[slug]);
     }
   });
 
   unsubTrilhas = onSnapshot(doc(db, "trilhas_sugeridas", slug), (snap) => {
     if (snap.exists()) {
       callbacks.onTrilhas?.(snap.data());
+    } else if (DEMO_PAYLOAD.trilhas_sugeridas?.[slug]) {
+      callbacks.onTrilhas?.(DEMO_PAYLOAD.trilhas_sugeridas[slug]);
     }
   }, (err) => {
-    console.warn(`Erro no snapshot da trilha ${slug}:`, err);
-    if (dadosOfflineCache?.trilhas_sugeridas?.[slug]) {
-      callbacks.onTrilhas?.(dadosOfflineCache.trilhas_sugeridas[slug]);
+    if (DEMO_PAYLOAD.trilhas_sugeridas?.[slug]) {
+      callbacks.onTrilhas?.(DEMO_PAYLOAD.trilhas_sugeridas[slug]);
     }
   });
 }
@@ -197,11 +205,11 @@ export async function salvarInteresseAluno(dados) {
       });
       return { sucesso: true, remoto: true };
     } catch (e) {
-      console.warn("Erro ao salvar no Firestore, salvando localmente:", e);
+      console.warn("Erro ao salvar no Firestore, salvando localmente:", e.message);
     }
   }
 
-  // Fallback local caso offline ou regras neguem
+  // Fallback local
   try {
     const registros = JSON.parse(localStorage.getItem("skillradar_interesses") || "[]");
     registros.push({ ...dados, criado_em: new Date().toISOString() });

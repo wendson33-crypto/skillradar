@@ -312,6 +312,11 @@ window.addEventListener("themeChanged", () => {
   renderizarTodosGraficos();
 });
 
+window.addEventListener("viewChanged", () => {
+  renderizarTodosGraficos();
+});
+
+
 // Dados de fallback para demonstração offline (Curso TDS / 17 vagas de desenvolvimento)
 export const EXEMPLO = {
   radar: {

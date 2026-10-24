@@ -42,13 +42,15 @@ export function mostrarVisao(nome) {
       document
         .querySelectorAll(`#${painelId} .chart-container`)
         .forEach((el) => {
-          if (window.Plotly && el.data) {
+          if (window.Plotly) {
             window.Plotly.Plots.resize(el);
           }
         });
     }
+    window.dispatchEvent(new CustomEvent("viewChanged", { detail: { visao: nome } }));
   });
 }
+
 
 // Suporte a navegação por setas do teclado (WAI-ARIA tablist)
 document.getElementById("togglePerfil")?.addEventListener("keydown", (e) => {

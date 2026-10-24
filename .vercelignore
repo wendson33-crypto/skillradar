@@ -4,6 +4,6 @@ requirements.txt
 Execution/
 tests/
 Directives/
-data/
+/data/
 .agents/
 documentation/

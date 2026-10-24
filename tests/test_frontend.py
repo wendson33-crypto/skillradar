@@ -20,9 +20,11 @@ def test_arquivos_estaticos_essenciais_existem():
         DOCS / "js" / "views.js",
         DOCS / "js" / "charts.js",
         DOCS / "js" / "firebase.js",
+        DOCS / "js" / "demo-data.js",
         DOCS / "js" / "app.js",
         DOCS / "data" / "demo_payload.json",
     ]
+
     for arquivo in arquivos_esperados:
         assert arquivo.exists(), f"Arquivo essencial ausente: {arquivo}"
         assert arquivo.stat().st_size > 0, f"Arquivo vazio: {arquivo}"

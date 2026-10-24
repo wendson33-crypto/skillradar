@@ -113,6 +113,12 @@ Fui fazer o deploy no vercel e pareceu o seguinte erro: Error: [PYTHON_ENTRYPOIN
 Learn More: https://vercel.com/docs/functions/runtimes/python#python-entrypoints
 ```
 
+### Prompt 14
+```text
+Não está trazendo as informações quando atualizo os filtros em nenhuma dos perfis, aluno e cordenador
+```
+
+
 
 
 
