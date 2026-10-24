@@ -1,0 +1,9 @@
+# .vercelignore
+# Impede que o Vercel tente interpretar os scripts Python locais como Serverless Functions.
+requirements.txt
+Execution/
+tests/
+Directives/
+data/
+.agents/
+documentation/
