@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillRadar — Inteligência de Carreira & Currículo</title>
+  
+  <!-- Fontes Google: Space Grotesk e Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <!-- Script síncrono para prevenção de FOUC -->
+  <script src="js/theme-init.js"></script>
+
+  <!-- Estilos CSS Modulares -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Biblioteca Plotly.js para gráficos interativos -->
+  <script src="https://cdn.plot.ly/plotly-2.27.0.min.js" defer></script>
+
+  <!-- Configuração pública do Firebase -->
+  <script src="js/config.js"></script>
+
+  <!-- Aplicação modular principal -->
+  <script type="module" src="js/app.js"></script>
+</head>
+<body class="app-body">
+  <a href="#appMain" class="skip-link">Ir para o conteúdo principal</a>
+
+  <!-- Topo da aplicação -->
+  <header id="topBar" class="topbar">
+    <div class="topbar__brand">
+      <span class="topbar__icon" aria-hidden="true">🎯</span>
+      <h1 class="topbar__title">SkillRadar</h1>
+      <span id="liveIndicator" class="badge-live" role="status" aria-live="polite">
+        <span class="badge-live__dot" aria-hidden="true"></span> Atualizado ao vivo
+      </span>
+    </div>
+
+    <!-- Alternador Aluno / Coordenação (WAI-ARIA Tablist) -->
+    <nav class="topbar__nav" aria-label="Seleção de visão">
+      <div id="togglePerfil" class="role-switch" role="tablist" aria-label="Visão do painel">
+        <button id="tabAluno" class="role-switch__btn active" type="button" role="tab"
+                aria-selected="true" aria-controls="viewAluno" tabindex="0">Aluno</button>
+        <button id="tabCoordenacao" class="role-switch__btn" type="button" role="tab"
+                aria-selected="false" aria-controls="viewCoordenacao" tabindex="-1">Coordenação</button>
+      </div>
+    </nav>
+
+    <div class="topbar__actions">
+      <!-- Seletor dos 4 cursos da base SENAI -->
+      <label for="selectCurso" class="sr-only">Selecione o curso</label>
+      <select id="selectCurso" class="dropdown-input">
+        <option value="tecnico-em-desenvolvimento-de-sistemas" selected>Técnico em Desenvolvimento de Sistemas</option>
+        <option value="qualificacao-em-ia-generativa">Qualificação em IA Generativa</option>
+        <option value="qualificacao-em-analise-de-dados">Qualificação em Análise de Dados</option>
+        <option value="qualificacao-em-infraestrutura-e-nuvem">Qualificação em Infraestrutura e Nuvem</option>
+      </select>
+
+      <button id="toggleTheme" class="btn-icon" type="button" aria-label="Alternar tema claro/escuro">
+        <span class="theme-icon" aria-hidden="true">🌗</span>
+      </button>
+    </div>
+  </header>
+
+  <div class="app-shell">
+    <!-- Navegação lateral (desktop/tablet): menus contextuais por visão -->
+    <aside id="sidebarNav" class="sidebar">
+      <nav id="navAluno" class="sidebar__menu" aria-label="Navegação do aluno">
+        <a href="#kpiContainer" class="sidebar__link active">Visão geral</a>
+        <a href="#perfilSection" class="sidebar__link">Meu perfil</a>
+        <a href="#vagasSection" class="sidebar__link">Vagas compatíveis</a>
+        <a href="#trilhaSection" class="sidebar__link">Trilha recomendada</a>
+      </nav>
+      <nav id="navCoordenacao" class="sidebar__menu" aria-label="Navegação da coordenação" hidden>
+        <a href="#kpiContainer" class="sidebar__link active">Visão geral</a>
+        <a href="#visualizacaoGraficos" class="sidebar__link">Gráficos analíticos</a>
+        <a href="#lacunasSection" class="sidebar__link">Lacunas do curso</a>
+        <a href="#matrizSection" class="sidebar__link">Matriz de competências</a>
+      </nav>
+    </aside>
+
+    <main id="appMain" class="main-content">
+
+      <!-- ===== Compartilhado: KPIs Estruturais ===== -->
+      <section id="kpiContainer" class="kpi-grid" aria-label="Indicadores chave">
+        <article class="kpi-card" id="kpiVagas">
+          <span class="kpi-card__label">Vagas Ativas Monitoradas</span>
+          <strong class="kpi-card__value" data-bind="kpi.vagasAtivas">17</strong>
+          <span class="kpi-card__trend neutral" data-bind="kpi.vagasAtivas.trend">de 30 coletadas · área: desenvolvimento</span>
+        </article>
+
+        <article class="kpi-card" id="kpiCobertura">
+          <span class="kpi-card__label">Cobertura do Currículo</span>
+          <strong class="kpi-card__value" data-bind="kpi.cobertura">48,6%</strong>
+          <span class="kpi-card__trend neutral" data-bind="kpi.cobertura.trend">das competências pedidas o curso já ensina</span>
+        </article>
+
+        <article class="kpi-card" id="kpiLacunas">
+          <span class="kpi-card__label">Principais Lacunas</span>
+          <strong class="kpi-card__value kpi-card__value--text" data-bind="kpi.lacunas">TypeScript, Firebase</strong>
+          <span class="kpi-card__trend negative" data-bind="kpi.lacunas.trend">pedidas em 4 e 3 de 17 vagas</span>
+        </article>
+
+        <article class="kpi-card" id="kpiSalario">
+          <span class="kpi-card__label">Salário Mediano</span>
+          <strong class="kpi-card__value" data-bind="kpi.salario">R$ 5.250</strong>
+          <span class="kpi-card__trend neutral" data-bind="kpi.salario.trend">ponto médio das faixas · 16 vagas com faixa</span>
+        </article>
+      </section>
+
+      <!-- ===== Compartilhado: IA Insights ===== -->
+      <section id="iaInsights" class="insights-section" aria-label="Insights da inteligência artificial" aria-live="polite">
+        <article class="insight-card">
+          <div class="insight-card__header">
+            <span class="insight-card__icon" aria-hidden="true">💡</span>
+            <span class="badge-ai">Gerado por IA</span>
+          </div>
+          <h2 class="insight-card__title">TypeScript é a maior lacuna da área</h2>
+          <p class="insight-card__body">
+            TypeScript aparece em 4 de 17 vagas de desenvolvimento e não é ensinado em nenhum módulo da base.
+            Os 3 módulos da trilha sugerida elevam a aderência média de 68,1% para 76,4%.
+          </p>
+        </article>
+      </section>
+
+      <!-- ================= VISÃO DO ALUNO ================= -->
+      <div id="viewAluno" class="view" role="tabpanel" aria-labelledby="tabAluno">
+
+        <!-- Perfil anônimo: sem PII (apenas curso, nível e áreas) -->
+        <section id="perfilSection" class="section-container" aria-labelledby="tituloPerfil">
+          <header class="section-container__header">
+            <h2 id="tituloPerfil" class="section-container__title">Meu perfil (anônimo)</h2>
+          </header>
+          <form id="formPerfil" class="profile-form" novalidate>
+            <div class="form-field">
+              <label for="perfilNivel">Nível atual</label>
+              <select id="perfilNivel" class="dropdown-input">
+                <option value="basico">Básico</option>
+                <option value="intermediario" selected>Intermediário</option>
+                <option value="avancado">Avançado</option>
+              </select>
+            </div>
+            <fieldset class="form-field fieldset-chips">
+              <legend>Áreas de interesse</legend>
+              <label class="chip-option"><input type="checkbox" name="areas" value="desenvolvimento" checked> Desenvolvimento</label>
+              <label class="chip-option"><input type="checkbox" name="areas" value="dados"> Dados</label>
+              <label class="chip-option"><input type="checkbox" name="areas" value="infraestrutura"> Infraestrutura</label>
+              <label class="chip-option"><input type="checkbox" name="areas" value="ia"> IA</label>
+              <label class="chip-option"><input type="checkbox" name="areas" value="design"> Design</label>
+              <label class="chip-option"><input type="checkbox" name="areas" value="seguranca"> Segurança</label>
+              <label class="chip-option"><input type="checkbox" name="areas" value="gestao"> Gestão</label>
+            </fieldset>
+            <p class="form-hint">O curso vem do seletor no topo. Nenhum dado pessoal é coletado: só curso, nível e áreas.</p>
+            <button type="submit" class="btn-primary">Atualizar recomendações</button>
+            <p id="perfilStatus" class="form-status" role="status"></p>
+          </form>
+        </section>
+
+        <!-- Vagas compatíveis ordenadas por aderência -->
+        <section id="vagasSection" class="section-container" aria-labelledby="tituloVagas">
+          <header class="section-container__header">
+            <h2 id="tituloVagas" class="section-container__title">Vagas Compatíveis</h2>
+            <div id="filtroVagas" class="filters-bar">
+              <input type="search" id="inputBuscaVaga" class="filter-input"
+                     placeholder="Buscar tecnologia ou cargo..." aria-label="Filtrar vagas por texto">
+              <select id="filtroArea" class="filter-select" aria-label="Filtrar por área">
+                <option value="todas">Todas as áreas</option>
+                <option value="desenvolvimento">Desenvolvimento</option>
+                <option value="dados">Dados</option>
+                <option value="infraestrutura">Infraestrutura</option>
+                <option value="ia">IA</option>
+                <option value="design">Design</option>
+                <option value="seguranca">Segurança</option>
+                <option value="gestao">Gestão</option>
+              </select>
+              <select id="filtroSalario" class="filter-select" aria-label="Filtrar por faixa salarial">
+                <option value="todas">Qualquer faixa</option>
+                <option value="ate-3000">Até R$ 3.000</option>
+                <option value="3000-6000">R$ 3.000 a R$ 6.000</option>
+                <option value="acima-6000">Acima de R$ 6.000</option>
+              </select>
+            </div>
+          </header>
+
+          <div id="listaVagas" class="cards-list"></div>
+          <div id="estadoVazioVagas" class="state-empty" hidden>
+            Nenhuma vaga encontrada com esses filtros. Tente ampliar a busca.
+          </div>
+        </section>
+
+        <!-- Aderência do aluno às vagas (Top 5) -->
+        <section id="aderenciaSection" class="chart-card chart-card--wide" aria-labelledby="tituloAderencia">
+          <header class="chart-card__header">
+            <h2 id="tituloAderencia" class="chart-card__title">Aderência às vagas mais compatíveis</h2>
+          </header>
+          <div id="aderenciaChart" class="chart-container" role="region"
+               aria-label="Gráfico de barras com a aderência do curso às cinco vagas mais compatíveis"></div>
+          <details class="sr-data-table">
+            <summary>Ver dados da aderência em formato de tabela</summary>
+            <table>
+              <thead><tr><th>Vaga</th><th>Aderência</th></tr></thead>
+              <tbody id="tbodyAderencia"></tbody>
+            </table>
+          </details>
+        </section>
+
+        <!-- Trilha de aprendizado -->
+        <section id="trilhaSection" class="section-container" aria-labelledby="tituloTrilha">
+          <h2 id="tituloTrilha" class="section-container__title">Trilha Recomendada para Suprir Lacunas</h2>
+          <ol id="trilhaAprendizado" class="timeline"></ol>
+          <p id="trilhaResumo" class="form-hint"></p>
+        </section>
+      </div>
+
+      <!-- ================= VISÃO DA COORDENAÇÃO ================= -->
+      <div id="viewCoordenacao" class="view" role="tabpanel" aria-labelledby="tabCoordenacao" hidden>
+
+        <section id="visualizacaoGraficos" class="charts-grid" aria-label="Visualizações gráficas">
+          <!-- Gráfico 1: Radar -->
+          <article class="chart-card">
+            <header class="chart-card__header">
+              <h2 class="chart-card__title">Radar de Alinhamento: Curso vs. Mercado</h2>
+            </header>
+            <div id="radarChart" class="chart-container" role="region"
+                 aria-label="Gráfico de radar comparando o que o curso ensina e o que o mercado pede"></div>
+            <details class="sr-data-table">
+              <summary>Ver dados do radar em formato de tabela</summary>
+              <table>
+                <thead><tr><th>Competência</th><th>Ensinado no curso</th><th>% das vagas que pedem</th></tr></thead>
+                <tbody id="tbodyRadar"></tbody>
+              </table>
+            </details>
+          </article>
+
+          <!-- Gráfico 2: Tecnologias Mais Demandadas -->
+          <article class="chart-card">
+            <header class="chart-card__header">
+              <h2 class="chart-card__title">Tecnologias Mais Demandadas</h2>
+            </header>
+            <div id="topTecnologiasChart" class="chart-container" role="region"
+                 aria-label="Gráfico de barras horizontais com as tecnologias mais pedidas nas vagas"></div>
+            <details class="sr-data-table">
+              <summary>Ver dados das tecnologias em formato de tabela</summary>
+              <table>
+                <thead><tr><th>Competência</th><th>% das vagas</th><th>Situação</th></tr></thead>
+                <tbody id="tbodyTopTecnologias"></tbody>
+              </table>
+            </details>
+          </article>
+
+          <!-- Gráfico 3: Faixa Salarial por Área -->
+          <article class="chart-card">
+            <header class="chart-card__header">
+              <h2 class="chart-card__title">Faixa Salarial por Área</h2>
+            </header>
+            <div id="salarioChart" class="chart-container" role="region"
+                 aria-label="Gráfico de caixas com a distribuição salarial por área"></div>
+            <details class="sr-data-table">
+              <summary>Ver dados salariais em formato de tabela</summary>
+              <table>
+                <thead><tr><th>Área</th><th>Vagas com faixa</th><th>Mediana (R$)</th></tr></thead>
+                <tbody id="tbodySalario"></tbody>
+              </table>
+            </details>
+          </article>
+
+          <!-- Gráfico 4: Evolução de Vagas por Semana -->
+          <article class="chart-card">
+            <header class="chart-card__header">
+              <h2 class="chart-card__title">Evolução de Vagas por Semana</h2>
+            </header>
+            <div id="vagasSemanaChart" class="chart-container" role="region"
+                 aria-label="Gráfico de linha com o número de vagas coletadas por semana"></div>
+            <details class="sr-data-table">
+              <summary>Ver dados semanais em formato de tabela</summary>
+              <table>
+                <thead><tr><th>Semana</th><th>Vagas</th></tr></thead>
+                <tbody id="tbodyVagasSemana"></tbody>
+              </table>
+            </details>
+          </article>
+        </section>
+
+        <!-- Seção de Lacunas do Curso -->
+        <section id="lacunasSection" class="section-container" aria-labelledby="tituloLacunas">
+          <header class="section-container__header">
+            <h2 id="tituloLacunas" class="section-container__title">Lacunas do Curso</h2>
+            <button id="btnRelatorio" class="btn-primary" type="button">Gerar relatório (imprimir)</button>
+          </header>
+          <div class="table-wrap">
+            <table id="tabelaLacunas" class="table-lacunas">
+              <caption class="sr-only">Competências pedidas nas vagas e não ensinadas no curso</caption>
+              <thead>
+                <tr>
+                  <th scope="col">Competência</th>
+                  <th scope="col">Área</th>
+                  <th scope="col" class="num">Vagas</th>
+                  <th scope="col" class="num">% das vagas</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </section>
+
+        <!-- Gráfico 5: Matriz de Competências por Módulo -->
+        <section id="matrizSection" class="chart-card chart-card--wide" aria-labelledby="tituloMatriz">
+          <header class="chart-card__header">
+            <h2 id="tituloMatriz" class="chart-card__title">Matriz de Competências por Módulo</h2>
+          </header>
+          <div id="matrizCompetencias" class="chart-container chart-container--tall" role="region"
+               aria-label="Mapa de calor que mostra quais módulos ensinam cada competência demandada"></div>
+        </section>
+      </div>
+
+      <!-- ===== Compartilhado: Transparência sobre a Amostra ===== -->
+      <p id="amostraInfo" class="status-bar" role="status">
+        Última coleta: 23/10/2026 · Amostra: 17 vagas na área do curso (30 coletadas) · Dados de demonstração
+      </p>
+    </main>
+  </div>
+
+  <!-- Navegação inferior fixa (Mobile) -->
+  <nav id="bottomNav" class="bottom-nav" aria-label="Navegação móvel">
+    <button class="bottom-nav__item active" type="button" data-alvo-aluno="kpiContainer" data-alvo-coordenacao="kpiContainer">
+      <span class="bottom-nav__icon" aria-hidden="true">📊</span><span class="bottom-nav__label">Painel</span>
+    </button>
+    <button class="bottom-nav__item" type="button" data-alvo-aluno="vagasSection" data-alvo-coordenacao="visualizacaoGraficos">
+      <span class="bottom-nav__icon" aria-hidden="true">💼</span><span class="bottom-nav__label">Vagas</span>
+    </button>
+    <button class="bottom-nav__item" type="button" data-alvo-aluno="trilhaSection" data-alvo-coordenacao="lacunasSection">
+      <span class="bottom-nav__icon" aria-hidden="true">🗺️</span><span class="bottom-nav__label">Trilha</span>
+    </button>
+    <button class="bottom-nav__item" type="button" data-alvo-aluno="perfilSection" data-alvo-coordenacao="matrizSection">
+      <span class="bottom-nav__icon" aria-hidden="true">👤</span><span class="bottom-nav__label">Perfil</span>
+    </button>
+  </nav>
+</body>
+</html>

@@ -1,0 +1,62 @@
+competencia_padrao,sinonimos,area
+Lógica de Programação,lógica de programação|logica de programacao|raciocínio lógico|algoritmos e lógica,desenvolvimento
+Algoritmos,algoritmos|algoritmo|estruturas de dados,desenvolvimento
+Programação Orientada a Objetos,programação orientada a objetos|orientação a objetos|poo|oop,desenvolvimento
+Java,java|jdk|java se,desenvolvimento
+SQL,sql|mysql|postgresql|postgres|sql server|oracle|pl/sql|consultas sql,dados
+Modelagem de Dados,modelagem de dados|modelagem relacional|diagrama entidade-relacionamento|modelo dimensional,dados
+HTML,html|html5,desenvolvimento
+CSS,css|css3|sass|scss|tailwind|bootstrap,desenvolvimento
+JavaScript,javascript|java script|ecmascript|vanilla js,desenvolvimento
+Node.js,node.js|nodejs|node|express|expressjs|nestjs,desenvolvimento
+APIs REST,apis rest|api rest|rest api|restful|integração via apis|integração com apis|apis|api|web services|webservices|postman|swagger|openapi,desenvolvimento
+Git,git|github|gitlab|bitbucket|versionamento,desenvolvimento
+Metodologias Ágeis,metodologias ágeis|metodologias ageis|scrum|kanban|agile|ágil|sprint,gestao
+UML,uml|diagramas uml|diagrama de classes|casos de uso,desenvolvimento
+Levantamento de Requisitos,levantamento de requisitos|análise de requisitos|requisitos de software|elicitação de requisitos,gestao
+Desenvolvimento Mobile,desenvolvimento mobile|aplicativos mobile|aplicativos|app mobile|flutter|react native|android|ios|kotlin|swift,desenvolvimento
+Segurança da Informação,segurança da informação|segurança e governança|cibersegurança|owasp|pentest|vulnerabilidades|firewall|firewalls|iso 27001,seguranca
+LGPD,lgpd|lei geral de proteção de dados|privacidade de dados,seguranca
+Docker,docker|dockerfile|docker compose|contêineres|containers,infraestrutura
+Testes Automatizados,testes automatizados|testes manuais e automatizados|automação de testes|testes unitários|jest|junit|pytest|cypress|selenium|tdd,desenvolvimento
+UX/UI Design,ux/ui|ux|design de interfaces|figma|prototipação|experiência do usuário|pesquisa com usuários|adobe xd,design
+IA Generativa,ia generativa|ai generativa|inteligência artificial generativa|genai|llm|llms|modelos de linguagem|chatgpt|gemini,ia
+Engenharia de Prompt,engenharia de prompt|engenharia de prompts|prompt engineering|criação de prompts|prompts,ia
+Documentação de Projeto,documentação de projeto|documentação técnica|markdown,gestao
+Design System,design system|design systems|sistema de design|biblioteca de componentes|storybook,design
+RAG,rag|retrieval augmented generation|bases vetoriais|banco vetorial|busca semântica|embeddings,ia
+Pandas,pandas|dataframes|numpy,dados
+Web Scraping,web scraping|raspagem de dados|scraping|beautifulsoup|crawler|crawlers|coleta de dados de sites,dados
+Agentes de IA,agentes de ia|agentes de inteligência artificial|ai agents|multi-agentes|multiagentes|agentes autônomos|langchain,ia
+Python,python|python3,desenvolvimento
+Banco de Dados NoSQL,banco de dados nosql|nosql|mongodb|dynamodb|redis|cassandra,dados
+Firebase,firebase|firebase firestore|cloud firestore|firestore|firebase auth,desenvolvimento
+Gestão de Credenciais,gestão de credenciais|gestão de segredos|variáveis de ambiente|segredos|secrets|vault,seguranca
+CI/CD,ci/cd|ci cd|integração contínua|entrega contínua|jenkins|github actions|gitlab ci|pipeline de deploy|deploy automatizado,infraestrutura
+Visualização de Dados,visualização de dados|dashboards|dashboard|data viz|plotly|tableau|looker|matplotlib,dados
+Estatística,estatística|análise estatística|testes de hipótese|probabilidade,dados
+Excel,excel avançado|excel|planilhas|tabelas dinâmicas|vba|google sheets,dados
+Power BI,power bi|powerbi|dax,dados
+ETL,etl|elt|pipelines etl|pipeline de dados|integração de dados,dados
+Machine Learning,machine learning|aprendizado de máquina|scikit-learn|sklearn|modelos preditivos,ia
+Storytelling com Dados,storytelling com dados|data storytelling|narrativa com dados|storytelling,dados
+Redes de Computadores,redes de computadores|infraestrutura de redes|noções de redes|redes|roteadores|switches|cabeamento estruturado|vlan|ccna,infraestrutura
+TCP/IP,tcp/ip|tcp ip|protocolos de rede|dns|dhcp,infraestrutura
+Linux,linux|servidores linux|ubuntu|debian|centos|red hat,infraestrutura
+Shell Script,shell script|scripts em shell|scripts shell|shellscript|shell|bash,infraestrutura
+Cloud Computing,cloud computing|computação em nuvem|nuvem|cloud|google cloud|gcp,infraestrutura
+Monitoramento e Logs,monitoramento e logs|monitoramento de logs|monitoramento de redes|monitoramento|zabbix|grafana|prometheus|observabilidade|logs,infraestrutura
+React,react|reactjs|react.js|next.js|nextjs,desenvolvimento
+TypeScript,typescript,desenvolvimento
+Kubernetes,kubernetes|k8s|orquestração de contêineres|helm|openshift,infraestrutura
+Spring Boot,spring boot|spring framework|spring,desenvolvimento
+.NET,.net core|.net|dotnet|asp.net|c#|csharp,desenvolvimento
+PHP,php|laravel|symfony|codeigniter,desenvolvimento
+Frameworks Python,frameworks python|django|flask|fastapi,desenvolvimento
+AWS,aws|amazon web services|ec2|lambda,infraestrutura
+Azure,azure|microsoft azure|azure devops,infraestrutura
+Microsserviços,microsserviços|microserviços|microservices|arquitetura de microsserviços,desenvolvimento
+Big Data,big data|apache spark|spark|hadoop|databricks,dados
+Deep Learning,deep learning|aprendizado profundo|redes neurais|tensorflow|pytorch|keras,ia
+Infraestrutura como Código,infraestrutura como código|iac|terraform|ansible|cloudformation,infraestrutura
+Inglês Técnico,inglês técnico|inglês avançado|inglês fluente|inglês intermediário|leitura em inglês,geral

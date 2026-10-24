@@ -1,0 +1,47 @@
+/* docs/css/tokens.css */
+/* Design Tokens do SkillRadar — Suporte completo Dark e Light Mode */
+
+:root {
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-pill: 9999px;
+  --transition-fast: 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-normal: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 14px rgba(0, 0, 0, 0.25);
+}
+
+/* Dark Mode (Padrão) */
+[data-theme="dark"],
+:root:not([data-theme="light"]) {
+  --bg: #0B1020;
+  --surface: #141B30;
+  --surface-2: #1D2742;
+  --surface-hover: #253154;
+  --text: #E8ECF8;
+  --text-muted: #93A0C0;
+  --accent: #4F8CFF;     /* Azul Elétrico: Foco Acadêmico / Cobertura do Curso */
+  --accent-2: #FF8A3D;   /* Laranja Dinâmico: Foco de Mercado / Demanda de Vagas */
+  --ok: #3DD68C;         /* Status positivo / Competência Dominada */
+  --warn: #F5B83D;       /* Atenção / Cobertura parcial */
+  --danger: #FF5C6C;     /* Alerta crítico / Lacuna curricular prioritária */
+  --border: #2A3558;
+  --focus-ring: #4F8CFF;
+}
+
+/* Light Mode (Relatórios e Projeções) */
+[data-theme="light"] {
+  --bg: #F5F7FC;
+  --surface: #FFFFFF;
+  --surface-2: #ECF0F9;
+  --surface-hover: #DFE5F2;
+  --text: #18213A;
+  --text-muted: #5A6682;
+  --accent: #2F6BE0;
+  --accent-2: #D9600F;
+  --ok: #1E9E5A;
+  --warn: #B07800;
+  --danger: #C62839;
+  --border: #D5DBEA;
+  --focus-ring: #2F6BE0;
+}

@@ -1,0 +1,33 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Leitura pública irrestrita para as coleções consolidadas do SkillRadar
+    // Escrita pública proibida (apenas o backend com Admin SDK pode escrever)
+    match /{colecao}/{doc=**} {
+      allow read: if colecao in [
+        'contexto',
+        'vagas_ativas',
+        'lacunas_cursos',
+        'trilhas_sugeridas',
+        'insights',
+        'competencias_demandadas'
+      ];
+      allow write: if false;
+    }
+
+    // Única coleção com permissão de criação pública pelo front-end
+    // Estritamente anônima e com validação rígida de schema e valores
+    match /interesses_alunos/{id} {
+      allow read: if false;
+      allow create: if request.resource.data.keys().hasOnly(['curso_interesse', 'nivel', 'areas', 'criado_em'])
+        && request.resource.data.criado_em == request.time
+        && request.resource.data.nivel in ['iniciante', 'intermediario', 'avancado']
+        && request.resource.data.curso_interesse is string
+        && request.resource.data.curso_interesse.size() <= 80
+        && request.resource.data.areas is list
+        && request.resource.data.areas.size() <= 7
+        && request.resource.data.areas.hasOnly(['desenvolvimento', 'dados', 'ia', 'infraestrutura', 'seguranca', 'design', 'gestao']);
+      allow update, delete: if false;
+    }
+  }
+}

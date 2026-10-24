@@ -1,0 +1,28 @@
+# Configurações locais e segredos (NUNCA versionar)
+.env
+.env.*
+!.env.example
+*.json.key
+*-sa.json
+serviceAccount*.json
+mcp_config.json
+
+# Build e deploys
+.vercel/
+.temp/
+
+# Python e ambientes virtuais
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.pytest_cache/
+*.log
+
+# SO e IDEs
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

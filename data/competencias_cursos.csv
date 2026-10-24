@@ -1,0 +1,61 @@
+curso,modulo,competencia,carga_horaria,nivel,area,ferramenta_ensinada
+Técnico em Desenvolvimento de Sistemas,Lógica de Programação,Lógica de Programação,80,basico,desenvolvimento,VisuAlg
+Técnico em Desenvolvimento de Sistemas,Lógica de Programação,Algoritmos,80,basico,desenvolvimento,VisuAlg
+Técnico em Desenvolvimento de Sistemas,Programação Orientada a Objetos,Programação Orientada a Objetos,100,intermediario,desenvolvimento,Java
+Técnico em Desenvolvimento de Sistemas,Programação Orientada a Objetos,Java,100,intermediario,desenvolvimento,Java
+Técnico em Desenvolvimento de Sistemas,Banco de Dados Relacional,SQL,80,intermediario,dados,MySQL
+Técnico em Desenvolvimento de Sistemas,Banco de Dados Relacional,Modelagem de Dados,80,intermediario,dados,MySQL Workbench
+Técnico em Desenvolvimento de Sistemas,Desenvolvimento Web Front-end,HTML,120,basico,desenvolvimento,VS Code
+Técnico em Desenvolvimento de Sistemas,Desenvolvimento Web Front-end,CSS,120,basico,desenvolvimento,VS Code
+Técnico em Desenvolvimento de Sistemas,Desenvolvimento Web Front-end,JavaScript,120,intermediario,desenvolvimento,VS Code
+Técnico em Desenvolvimento de Sistemas,Desenvolvimento Web Back-end,Node.js,100,intermediario,desenvolvimento,Node.js
+Técnico em Desenvolvimento de Sistemas,Desenvolvimento Web Back-end,APIs REST,100,intermediario,desenvolvimento,Express e Postman
+Técnico em Desenvolvimento de Sistemas,Versionamento e Metodologias Ágeis,Git,40,basico,desenvolvimento,Git e GitHub
+Técnico em Desenvolvimento de Sistemas,Versionamento e Metodologias Ágeis,Metodologias Ágeis,40,basico,gestao,Scrum e Kanban
+Técnico em Desenvolvimento de Sistemas,Engenharia de Software,UML,60,intermediario,desenvolvimento,draw.io
+Técnico em Desenvolvimento de Sistemas,Engenharia de Software,Levantamento de Requisitos,60,intermediario,gestao,draw.io
+Técnico em Desenvolvimento de Sistemas,Desenvolvimento Mobile,Desenvolvimento Mobile,80,intermediario,desenvolvimento,Flutter
+Técnico em Desenvolvimento de Sistemas,Segurança no Desenvolvimento,Segurança da Informação,40,basico,seguranca,OWASP
+Técnico em Desenvolvimento de Sistemas,Segurança no Desenvolvimento,LGPD,40,basico,seguranca,Estudos de caso
+Técnico em Desenvolvimento de Sistemas,Contêineres e Implantação,Docker,40,basico,infraestrutura,Docker
+Técnico em Desenvolvimento de Sistemas,Testes de Software,Testes Automatizados,40,basico,desenvolvimento,Jest
+Técnico em Desenvolvimento de Sistemas,Design de Interfaces,UX/UI Design,40,basico,design,Figma
+Qualificação em IA Generativa,Fundamentos de IA Generativa,IA Generativa,16,basico,ia,Gemini
+Qualificação em IA Generativa,Fundamentos de IA Generativa,Engenharia de Prompt,16,basico,ia,Google AI Studio
+Qualificação em IA Generativa,Engenharia e Diretivas de Projeto,Engenharia de Prompt,12,intermediario,ia,Antigravity
+Qualificação em IA Generativa,Engenharia e Diretivas de Projeto,Documentação de Projeto,12,basico,gestao,Markdown
+Qualificação em IA Generativa,UI/UX e Design System,UX/UI Design,16,intermediario,design,Google Stitch
+Qualificação em IA Generativa,UI/UX e Design System,Design System,16,basico,design,Google Stitch
+Qualificação em IA Generativa,UI/UX e Design System,HTML,16,basico,desenvolvimento,VS Code
+Qualificação em IA Generativa,UI/UX e Design System,CSS,16,basico,desenvolvimento,VS Code
+Qualificação em IA Generativa,Mineração de Dados e RAG,RAG,16,intermediario,ia,Python
+Qualificação em IA Generativa,Mineração de Dados e RAG,Pandas,16,intermediario,dados,Pandas
+Qualificação em IA Generativa,Web Scraping,Web Scraping,12,intermediario,dados,Python e BeautifulSoup
+Qualificação em IA Generativa,Multi-agentes e Gemini API,Agentes de IA,16,intermediario,ia,Gemini API
+Qualificação em IA Generativa,Multi-agentes e Gemini API,Python,16,intermediario,desenvolvimento,Python
+Qualificação em IA Generativa,Banco Realtime NoSQL,Banco de Dados NoSQL,12,basico,dados,Firebase Firestore
+Qualificação em IA Generativa,Banco Realtime NoSQL,Firebase,12,basico,desenvolvimento,Firebase
+Qualificação em IA Generativa,Governança e Segurança de Credenciais,Segurança da Informação,8,basico,seguranca,.env e .gitignore
+Qualificação em IA Generativa,Governança e Segurança de Credenciais,Gestão de Credenciais,8,basico,seguranca,.env e .gitignore
+Qualificação em IA Generativa,CI/CD e Deploy em Nuvem,CI/CD,12,basico,infraestrutura,GitHub Pages e GitHub MCP
+Qualificação em IA Generativa,CI/CD e Deploy em Nuvem,Git,12,basico,desenvolvimento,Git e GitHub
+Qualificação em IA Generativa,Analytics e Visualizações,Visualização de Dados,12,intermediario,dados,Plotly.js
+Qualificação em Análise de Dados,Fundamentos de Dados e Estatística,Estatística,40,basico,dados,Excel
+Qualificação em Análise de Dados,Fundamentos de Dados e Estatística,Excel,40,basico,dados,Excel
+Qualificação em Análise de Dados,SQL para Análise,SQL,60,intermediario,dados,PostgreSQL
+Qualificação em Análise de Dados,SQL para Análise,Modelagem de Dados,60,basico,dados,PostgreSQL
+Qualificação em Análise de Dados,Python para Dados,Python,80,intermediario,desenvolvimento,Python
+Qualificação em Análise de Dados,Python para Dados,Pandas,80,intermediario,dados,Pandas
+Qualificação em Análise de Dados,Visualização e Dashboards,Visualização de Dados,60,intermediario,dados,Power BI
+Qualificação em Análise de Dados,Visualização e Dashboards,Power BI,60,intermediario,dados,Power BI
+Qualificação em Análise de Dados,Engenharia de Dados Básica,ETL,40,basico,dados,Python
+Qualificação em Análise de Dados,Machine Learning Introdutório,Machine Learning,60,basico,ia,scikit-learn
+Qualificação em Análise de Dados,Machine Learning Introdutório,Estatística,60,intermediario,dados,scikit-learn
+Qualificação em Análise de Dados,Storytelling com Dados,Storytelling com Dados,20,basico,dados,Power BI
+Qualificação em Infraestrutura e Nuvem,Redes de Computadores,Redes de Computadores,80,basico,infraestrutura,Cisco Packet Tracer
+Qualificação em Infraestrutura e Nuvem,Redes de Computadores,TCP/IP,80,basico,infraestrutura,Cisco Packet Tracer
+Qualificação em Infraestrutura e Nuvem,Administração de Linux,Linux,60,intermediario,infraestrutura,Ubuntu Server
+Qualificação em Infraestrutura e Nuvem,Administração de Linux,Shell Script,60,basico,infraestrutura,Bash
+Qualificação em Infraestrutura e Nuvem,Fundamentos de Nuvem,Cloud Computing,40,basico,infraestrutura,Google Cloud
+Qualificação em Infraestrutura e Nuvem,Segurança de Redes,Segurança da Informação,60,intermediario,seguranca,Firewall e VPN
+Qualificação em Infraestrutura e Nuvem,Segurança de Redes,Monitoramento e Logs,60,basico,infraestrutura,Zabbix

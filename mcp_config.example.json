@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "stitch": {
+      "serverUrl": "https://stitch.googleapis.com/mcp",
+      "headers": {
+        "X-Goog-Api-Key": "SUA_STITCH_API_KEY_AQUI"
+      }
+    },
+    "github-local": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "SEU_GITHUB_TOKEN_AQUI"
+      }
+    }
+  }
+}
